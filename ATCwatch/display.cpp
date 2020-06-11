@@ -35,7 +35,7 @@ bool drawChar(uint32_t x, uint32_t y, unsigned char c, uint16_t color, uint16_t 
       return false;
     } else {
       last_uni_char = false;
-      if (last_char == 0xC3) {
+      if (last_char == 0xC3) {    //remap UTF-8 characters to 8-bit encoding
         switch (c) {
           case 0x84://Ä
             c = 0x8E;
@@ -56,7 +56,110 @@ bool drawChar(uint32_t x, uint32_t y, unsigned char c, uint16_t color, uint16_t 
             c = 0x81;
             break;
           case 0x9F://ß
-            c = 0x98;
+            c = 0xE1;
+            break;
+
+          case 0x81://Á
+            c = 0xB5;
+            break;
+          case 0xA1://á
+            c = 0xA0;
+            break;
+          case 0x89://É
+            c = 0x90;
+            break;
+          case 0xA9://é
+            c = 0x82;
+            break;
+          case 0x8D://Í
+            c = 0xD6;
+            break;
+          case 0xAD://í
+            c = 0xA1;
+            break;
+          case 0x93://Ó
+            c = 0xE0;
+            break;
+          case 0xB3://ó
+            c = 0xA2;
+            break;
+          case 0x9A://Ú
+            c = 0xE9;
+            break;
+          case 0xBA://ú
+            c = 0xE3;
+            break;
+          case 0x9D://Ý
+            c = 0xED;
+            break;
+          case 0xBD://ý
+            c = 0xEC;
+            break;
+          default:
+            return false;
+            break;
+        }
+      } else if (last_char == 0xC4) {
+        switch (c) {
+          case 0x8C://Č
+            c = 0x80;
+            break;
+          case 0x8D://č
+            c = 0x87;
+            break;
+          case 0x8E://Ď
+            c = 0x9D;
+            break;
+          case 0x8F://ď
+            c = 0x9B;
+            break;
+          case 0x9A://Ě
+            c = 0xD2;
+            break;
+          case 0x9B://ě
+            c = 0x88;
+            break;
+          default:
+            return false;
+            break;
+        }
+      } else if (last_char == 0xC5) {
+        switch (c) {
+          case 0xAE://Ů
+            c = 0xEA;
+            break;
+          case 0xAF://ů
+            c = 0x96;
+            break;
+          case 0x87://Ň
+            c = 0xA5;
+            break;
+          case 0x88://ň
+            c = 0xA4;
+            break;
+          case 0x98://Ř
+            c = 0x92;
+            break;
+          case 0x99://ř
+            c = 0x91;
+            break;
+          case 0xA0://Š
+            c = 0xB6;
+            break;
+          case 0xA1://š
+            c = 0x83;
+            break;
+          case 0xA4://Ť
+            c = 0xD7;
+            break;
+          case 0xA5://ť
+            c = 0x8C;
+            break;
+          case 0xBD://Ž
+            c = 0xE2;
+            break;
+          case 0xBE://ž
+            c = 0x93;
             break;
           default:
             return false;
