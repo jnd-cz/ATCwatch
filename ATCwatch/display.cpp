@@ -87,7 +87,7 @@ bool drawChar(uint32_t x, uint32_t y, unsigned char c, uint16_t color, uint16_t 
             c = 0xE9;
             break;
           case 0xBA://ú
-            c = 0xE3;
+            c = 0xA3;
             break;
           case 0x9D://Ý
             c = 0xED;
