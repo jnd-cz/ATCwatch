@@ -1,10 +1,9 @@
 
+
 //You can use and edit the code as long as you mention me (Aaron Christophel and https://ATCnetz.de) in the source and somewhere in the menu of the working firmware, even when using small peaces of the code. :)
 //If you want to use the code or parts of it commercial please write an email to: info@atcnetz.de
 
 //This code uses the BMA421 Library wich is made by Bosch and this is under copyright by Bosch Sensortech GmbH
-//https://github.com/BoschSensortec/BMA423-Sensor-API
-//Many Thanks to Daniel Thompson(https://github.com/daniel-thompson/wasp-os) to giving the Hint with the BMA423 Library
 
 #include "pinout.h"
 #include "watchdog.h"
@@ -72,7 +71,9 @@ void loop() {
   }
   if (get_timed_int()) {//Theorecticly every 40ms via RTC2 but since the display takes longer its not accurate at all when display on
     if (get_sleep()) {
-      if (acc_input())sleep_up(WAKEUP_ACCL);//check if the hand was lifted and turn on the display if so
+      if (acc_input()){
+         sleep_up(WAKEUP_ACCL);//check if the hand was lifted and turn on the display if so
+      }
     }
     time_data_struct time_data = get_time();
     if (time_data.hr == 0) {// check for new day

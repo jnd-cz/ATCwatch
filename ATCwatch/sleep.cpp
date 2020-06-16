@@ -2,6 +2,7 @@
 #include "sleep.h"
 #include "Arduino.h"
 #include "pinout.h"
+#include "battery.h"
 #include "display.h"
 #include "backlight.h"
 #include "heartrate.h"
@@ -12,6 +13,7 @@
 #include <nrf_nvic.h>//interrupt controller stuff
 #include <nrf_sdm.h>
 #include <nrf_soc.h>
+#include <lvgl.h>
 
 bool sleep_enable = false;
 bool sleep_sleeping = false;
@@ -40,6 +42,10 @@ bool sleep_up(int reason) {
     set_sleep_time();
     display_enable(true);
     set_backlight();
+    if (get_charge()) {
+      display_home();
+    } else
+      display_charging();
     return true;
   }
   return false;
@@ -59,6 +65,7 @@ int get_wakeup_reason() {
 
 void disable_hardware() {
   set_backlight(0);
+  inc_tick();
   display_home();
   display_screen(true);
   end_hrs3300();
@@ -140,6 +147,7 @@ void RTC2_IRQHandler(void)
     dummy = NRF_RTC2->EVENTS_COMPARE[0];
     dummy;
     shot = true;
+    if (!sleep_sleeping)inc_tick();
     check_inputoutput_times();
     if (!i2cReading)get_heartrate_ms();
   }
