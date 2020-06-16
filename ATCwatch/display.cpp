@@ -3,10 +3,7 @@
 #include <lvgl.h>
 #include "fast_spi.h"
 #include "images.h"
-<<<<<<< HEAD
 #include "font57cz.h"
-=======
->>>>>>> fe0ce8b71f2ee73f2e4e1347655143d834d4584b
 #include "battery.h"
 #include "touch.h"
 #include "accl.h"
