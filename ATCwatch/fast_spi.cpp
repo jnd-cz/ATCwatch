@@ -47,7 +47,8 @@ void disable_workaround(NRF_SPIM_Type * spim, uint32_t ppi_channel, uint32_t gpi
   NRF_PPI->CHENSET = ppi_channel;
 }
 
-void write_fast_spi(const uint8_t *ptr, uint32_t len) {
+
+void write_fast_spi(uint8_t *ptr, uint32_t len) {
   if (len == 1) {
     enable_workaround(NRF_SPIM2, 8, 8);
   } else {
@@ -75,42 +76,6 @@ void write_fast_spi(const uint8_t *ptr, uint32_t len) {
     }
     NRF_SPIM2->RXD.PTR = 0;
     NRF_SPIM2->RXD.MAXCNT = 0;
-    NRF_SPIM2->TASKS_START = 1;
-    while (NRF_SPIM2->EVENTS_END == 0);
-    NRF_SPIM2->EVENTS_END = 0;
-  }
-  while ( len );
-}
-
-void read_fast_spi(uint8_t *ptr, uint32_t len)
-{
-  if (len == 1) {
-    enable_workaround(NRF_SPIM2, 8, 8);
-  } else {
-    disable_workaround(NRF_SPIM2, 8, 8);
-  }
-
-  int v2 = 0;
-  do
-  {
-    NRF_SPIM2->EVENTS_END = 0;
-    NRF_SPIM2->EVENTS_ENDRX = 0;
-    NRF_SPIM2->EVENTS_ENDTX = 0;
-    NRF_SPIM2->TXD.PTR = 0;
-    NRF_SPIM2->TXD.MAXCNT = 0;
-    NRF_SPIM2->RXD.PTR = (int)ptr + v2;
-    if ( len <= 0xFF )
-    {
-      NRF_SPIM2->RXD.MAXCNT = len;
-      v2 += len;
-      len = 0;
-    }
-    else
-    {
-      NRF_SPIM2->RXD.MAXCNT = 255;
-      v2 += 255;
-      len -= 255;
-    }
     NRF_SPIM2->TASKS_START = 1;
     while (NRF_SPIM2->EVENTS_END == 0);
     NRF_SPIM2->EVENTS_END = 0;

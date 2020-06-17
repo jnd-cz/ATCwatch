@@ -5,6 +5,7 @@
 #include "images.h"
 #include "menu.h"
 #include "display.h"
+#include "menuAppsBase.h"
 #include "ble.h"
 #include "time.h"
 #include "battery.h"
@@ -14,30 +15,19 @@
 #include "heartrate.h"
 
 
-class HeartScreen : public Screen
+class HeartScreen : public TheScreen
 {
   public:
+    HeartScreen() {
+    }
+
     virtual void pre()
     {
       start_hrs3300();
-
-      label = lv_label_create(lv_scr_act(), NULL);
-      lv_label_set_text(label, "Heartrate");
-      lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 0);
-
-      set_gray_screen_style(&lv_font_roboto_28);
-      
-      label_hr = lv_label_create(lv_scr_act(), NULL);
-      lv_label_set_text(label_hr, "HR:");
-      lv_obj_align(label_hr, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 50);
-
-      label_hr_last = lv_label_create(lv_scr_act(), NULL);
-      lv_label_set_text(label_hr_last, "Last HR:");
-      lv_obj_align(label_hr_last, NULL, LV_ALIGN_IN_TOP_LEFT, 10, 80);
-
-      lv_obj_t * img1 = lv_img_create(lv_scr_act(), NULL);
-      lv_img_set_src(img1, &IsymbolHeart);
-      lv_obj_align(img1, NULL, LV_ALIGN_IN_BOTTOM_MID, 0, 0);
+      displayRect(0, 0, 240, 240, 0x0000);
+      displayPrintln(0, 0, "Heartrate:", 0xFFFF, 0x0000, 2);
+      displayImage(120 - (72 / 2), 240-72, 72, 72, symbolHeart);
+      displayPrintln(0, 50, "Last HR:", 0xFFFF, 0x0000, 2);
     }
 
     virtual void main()
@@ -48,16 +38,16 @@ class HeartScreen : public Screen
         case 255:
           break;
         case 254:
-          lv_label_set_text_fmt(label_hr, "HR: No Touch");
+          displayPrintln(0, 20, "No Touch      ", 0xFFFF, 0x0000, 2);
           break;
         case 253:
-          lv_label_set_text_fmt(label_hr, "HR: Please Wait");
+          displayPrintln(0, 20, "Please Wait   ", 0xFFFF, 0x0000, 2);
           break;
         default:
-          lv_label_set_text_fmt(label_hr, "HR: %i", hr);
+          displayPrintln(0, 20, (String)hr + "          ", 0xFFFF, 0x0000, 2);
           break;
       }
-      lv_label_set_text_fmt(label_hr_last, "Last HR: %i", get_last_heartrate());
+      displayPrintln(0, 70, (String)get_last_heartrate() + "   ", 0xFFFF, 0x0000, 2);
     }
 
     virtual void post()
@@ -70,12 +60,7 @@ class HeartScreen : public Screen
       return 50000;
     }
 
-    virtual void right()
-    {
-      set_last_menu();
-    }
-
   private:
-    lv_obj_t *label, *label_hr, *label_hr_last;
+
 
 };

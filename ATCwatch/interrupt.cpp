@@ -67,7 +67,7 @@ void GPIOTE_IRQHandler()
       last_accl_state = accl_pin;
       NRF_GPIO->PIN_CNF[BMA421_INT] &= ~GPIO_PIN_CNF_SENSE_Msk;
       NRF_GPIO->PIN_CNF[BMA421_INT] |= ((last_accl_state ? GPIO_PIN_CNF_SENSE_Low : GPIO_PIN_CNF_SENSE_High) << GPIO_PIN_CNF_SENSE_Pos);
-      if (last_accl_state == false)set_accl_interrupt();
+      if (last_accl_state == false) set_accl_interrupt();
     }
   }
   (void)NRF_GPIOTE->EVENTS_PORT;
@@ -164,10 +164,8 @@ void interrupt_charged() {
   set_sleep_time();
   if (get_charged())
     set_led_ms(1000);
-  else {
+  else
     set_motor_ms();
-    display_charging();
-  }
 }
 
 void interrupt_charge() {
@@ -175,10 +173,8 @@ void interrupt_charge() {
   set_sleep_time();
   if (get_charge())
     set_led_ms(1000);
-  else {
+  else
     set_motor_ms();
-    display_charging();
-  }
 }
 
 void interrupt_button() {
@@ -195,7 +191,9 @@ void interrupt_button() {
 void interrupt_touch() {
   set_was_touched(true);
   if (!sleep_up(WAKEUP_TOUCH)) {
-    set_new_touch_interrupt();
+    check_menu();
+  } else {
+    display_home();
   }
   set_sleep_time();
 }
@@ -207,12 +205,6 @@ void interrupt_accl() {
 }
 
 void disable_interrupt() {
-  NRF_GPIO->PIN_CNF[PUSH_BUTTON_IN] &= ~GPIO_PIN_CNF_SENSE_Msk;
-  NRF_GPIO->PIN_CNF[PUSH_BUTTON_IN] |= (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
-
-  NRF_GPIO->PIN_CNF[POWER_INDICATION] &= ~GPIO_PIN_CNF_SENSE_Msk;
-  NRF_GPIO->PIN_CNF[POWER_INDICATION] |= (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
-
   NRF_GPIO->PIN_CNF[CHARGE_INDICATION] &= ~GPIO_PIN_CNF_SENSE_Msk;
   NRF_GPIO->PIN_CNF[CHARGE_INDICATION] |= (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos);
 

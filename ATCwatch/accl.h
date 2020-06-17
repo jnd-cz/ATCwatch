@@ -5,10 +5,10 @@
 #include "bma423.h"
 
 struct accl_data_struct {
-  int16_t x;
-  int16_t y;
-  int16_t z;
-  int32_t temp;
+  float x;
+  float y;
+  float z;
+  float temp;
   uint32_t steps;
   uint16_t result;
   uint8_t activity;

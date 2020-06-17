@@ -1,12 +1,10 @@
 
 #pragma once
 #include "Arduino.h"
+#include "class.h"
 #include "menu.h"
 
-#define DEFAULT_SLEEP_TIMEOUT 10000
-#define DEFAULT_REFRESH_TIME 40
-
-class Screen
+class TheScreen : public Screen
 {
   public:
     virtual void pre()
@@ -35,6 +33,7 @@ class Screen
 
     virtual void right()
     {
+      set_last_menu();
     }
 
     virtual void click(touch_data_struct touch_data)
@@ -44,13 +43,26 @@ class Screen
     virtual void long_click(touch_data_struct touch_data)
     {
     }
-    virtual uint32_t sleepTime()
+};
+
+
+class DemoScreen : public Screen
+{
+  public:
+
+    virtual void pre()
     {
-      return DEFAULT_SLEEP_TIMEOUT;
+
     }
-    
-    virtual uint32_t refreshTime()
+
+    virtual void main()
     {
-      return DEFAULT_REFRESH_TIME;
+
     }
+
+    virtual void post()
+    {
+
+    }
+
 };
