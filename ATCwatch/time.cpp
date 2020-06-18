@@ -51,3 +51,13 @@ String GetDateTimeString() {
   datetime += String(minute());
   return datetime;
 }
+
+bool is_night() {
+  time_data_struct time_data = get_time();
+  if (time_data.hr >= 23 || time_data.hr < 7) {
+    return true;
+  } else {
+    return false;
+  }
+}
+

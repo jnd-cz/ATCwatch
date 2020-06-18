@@ -43,7 +43,7 @@ void setup() {
   init_backlight();
   init_display();
   display_booting();
-  set_backlight(3);
+  set_backlight(4);
   init_battery();
   init_hrs3300();
   init_time();
@@ -56,7 +56,7 @@ void setup() {
   init_ble();//must be before interrupts!!!
   init_interrupt();//must be after ble!!!
   delay(100);
-  set_backlight(3);
+  set_backlight(4); //why call second time??
   display_home();
 }
 

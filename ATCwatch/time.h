@@ -12,6 +12,7 @@ struct time_data_struct {
   int sec;
 };
 
+bool is_night();
 void init_time();
 time_data_struct get_time();
 void SetDateTimeString(String datetime);

@@ -2,8 +2,9 @@
 #include "backlight.h"
 #include "Arduino.h"
 #include "pinout.h"
+#include "time.h"
 
-int backlight_brightness = 0;
+int backlight_brightness = 4;
 int min_backlight_brightness = 1;
 int max_backlight_brightness = 7;
 
@@ -16,7 +17,11 @@ void init_backlight() {
 }
 
 void set_backlight() {
-  set_backlight(backlight_brightness);
+  if (is_night()) { //when it's night time we should dial down brightness and keep display red
+    set_backlight(1);
+  } else {
+    set_backlight(backlight_brightness);
+  }
 }
 
 int get_backlight() {
